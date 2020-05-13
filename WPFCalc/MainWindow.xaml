@@ -31,6 +31,11 @@
         <RoutedUICommand x:Key="KeyX" Text="max" />
         <RoutedUICommand x:Key="KeyA" Text="avg" />
         <RoutedUICommand x:Key="KeyP" Text="^" />
+        
+        <!-- Clear -->
+        <RoutedUICommand x:Key="KeyEsc" Text="Esc" />
+        <RoutedUICommand x:Key="KeyCE" Text="CE" />
+        <RoutedUICommand x:Key="KeyBackspace" Text="Backspace" />
 
         <!-- Result -->
         <RoutedUICommand x:Key="KeyEq" Text="=" />
@@ -60,6 +65,11 @@
         <CommandBinding Command="{StaticResource KeyX}" Executed="btn_operation_Click" />
         <CommandBinding Command="{StaticResource KeyA}" Executed="btn_operation_Click" />
         <CommandBinding Command="{StaticResource KeyP}" Executed="btn_operation_Click" />
+        
+        <!-- Clear -->
+        <CommandBinding Command="{StaticResource KeyEsc}" Executed="btn_C_Click" />
+        <CommandBinding Command="{StaticResource KeyCE}" Executed="btn_CE_Click" />
+        <CommandBinding Command="{StaticResource KeyBackspace}" Executed="btn_Backspace_Click" />
 
         <!-- Result -->
         <CommandBinding Command="{StaticResource KeyEq}" Executed="btn_eq_Click" />
@@ -68,30 +78,35 @@
     <!-- InputBindings -->
     <Window.InputBindings>
         <!-- Numbers -->
-        <KeyBinding Key="NumPad7"  Command="{StaticResource Key7}" />
-        <KeyBinding Key="NumPad8"  Command="{StaticResource Key8}" />
-        <KeyBinding Key="NumPad9"  Command="{StaticResource Key9}" />
-        <KeyBinding Key="NumPad0"  Command="{StaticResource Key0}" />
-        <KeyBinding Key="NumPad1"  Command="{StaticResource Key1}" />
-        <KeyBinding Key="NumPad2"  Command="{StaticResource Key2}" />
-        <KeyBinding Key="NumPad3"  Command="{StaticResource Key3}" />
-        <KeyBinding Key="NumPad4"  Command="{StaticResource Key4}" />
-        <KeyBinding Key="NumPad5"  Command="{StaticResource Key5}" />
-        <KeyBinding Key="NumPad6"  Command="{StaticResource Key6}" />
+        <KeyBinding Key="NumPad7" Command="{StaticResource Key7}" />
+        <KeyBinding Key="NumPad8" Command="{StaticResource Key8}" />
+        <KeyBinding Key="NumPad9" Command="{StaticResource Key9}" />
+        <KeyBinding Key="NumPad0" Command="{StaticResource Key0}" />
+        <KeyBinding Key="NumPad1" Command="{StaticResource Key1}" />
+        <KeyBinding Key="NumPad2" Command="{StaticResource Key2}" />
+        <KeyBinding Key="NumPad3" Command="{StaticResource Key3}" />
+        <KeyBinding Key="NumPad4" Command="{StaticResource Key4}" />
+        <KeyBinding Key="NumPad5" Command="{StaticResource Key5}" />
+        <KeyBinding Key="NumPad6" Command="{StaticResource Key6}" />
         
         <!-- Operations -->
-        <KeyBinding Key="Add"  Command="{StaticResource KeyPlus}" />
-        <KeyBinding Key="Subtract"  Command="{StaticResource KeyMinus}" />
-        <KeyBinding Key="Multiply"  Command="{StaticResource KeyMul}" />
-        <KeyBinding Key="Divide"  Command="{StaticResource KeyDiv}" />
+        <KeyBinding Key="Add" Command="{StaticResource KeyPlus}" />
+        <KeyBinding Key="Subtract" Command="{StaticResource KeyMinus}" />
+        <KeyBinding Key="Multiply" Command="{StaticResource KeyMul}" />
+        <KeyBinding Key="Divide" Command="{StaticResource KeyDiv}" />
 
-        <KeyBinding Key="N"  Command="{StaticResource KeyN}" />
-        <KeyBinding Key="X"  Command="{StaticResource KeyX}" />
-        <KeyBinding Key="A"  Command="{StaticResource KeyA}" />
-        <KeyBinding Key="P"  Command="{StaticResource KeyP}" />
+        <KeyBinding Key="N" Command="{StaticResource KeyN}" />
+        <KeyBinding Key="X" Command="{StaticResource KeyX}" />
+        <KeyBinding Key="A" Command="{StaticResource KeyA}" />
+        <KeyBinding Key="P" Command="{StaticResource KeyP}" />
+        
+        <!-- Clear -->
+        <KeyBinding Key="Esc" Command="{StaticResource KeyEsc}" />
+        <KeyBinding Key="C" Command="{StaticResource KeyCE}" />
+        <KeyBinding Key="Backspace" Command="{StaticResource KeyBackspace}" />
 
         <!-- Result -->
-        <KeyBinding Key="Return"  Command="{StaticResource KeyEq}" />
+        <KeyBinding Key="Return" Command="{StaticResource KeyEq}" />
     </Window.InputBindings>
     
     <!-- Grid -->
@@ -138,16 +153,16 @@
         <Button Grid.Row="6" Grid.Column="3" x:Name="btn_plus" ToolTip="+" Command="{StaticResource KeyPlus}">+</Button>
         
         <!-- Result -->
-        <Button Grid.Row="7" Grid.Column="3" x:Name="btn_eq" ToolTip="Enter" Click="btn_eq_Click">=</Button>
+        <Button Grid.Row="7" Grid.Column="3" x:Name="btn_eq" ToolTip="Enter" Command="{StaticResource KeyEq}">=</Button>
 
         <!-- Some more buttons -->
         <Button Grid.Row="7" Grid.Column="2" x:Name="btn_comma">,</Button>
         <Button Grid.Row="7" Grid.Column="0" x:Name="btn_plusminus">+/-</Button>
         
         <!-- Buttons (Clear) -->
-        <Button Grid.Row="3" Grid.Column="0" x:Name="btn_C" ToolTip="Esc">C</Button>
-        <Button Grid.Row="3" Grid.Column="1" x:Name="btn_CE" ToolTip="c">CE</Button>
-        <Button Grid.Row="3" Grid.Column="2" x:Name="btn_backspace" ToolTip="Backspace" Content="&lt;="></Button>
+        <Button Grid.Row="3" Grid.Column="0" x:Name="btn_C" ToolTip="Esc" Command="{StaticResource KeyEsc}">C</Button>
+        <Button Grid.Row="3" Grid.Column="1" x:Name="btn_CE" ToolTip="c" Command="{StaticResource KeyCE}">CE</Button>
+        <Button Grid.Row="3" Grid.Column="2" x:Name="btn_backspace" ToolTip="Backspace" Content="&lt;=" Command="{StaticResource KeyBackspace}"></Button>
         
         <!-- TextBox (Value) -->
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" 

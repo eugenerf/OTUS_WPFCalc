@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -86,10 +87,10 @@ namespace WPFCalc
                     textboxValue = Operand / textboxValue;
                     break;
                 case "min":
-                    textboxValue = (textboxValue < Operand) ? textboxValue : Operand;
+                    textboxValue = Math.Min(Operand, textboxValue);
                     break;
                 case "max":
-                    textboxValue = (textboxValue > Operand) ? textboxValue : Operand;
+                    textboxValue = Math.Max(Operand, textboxValue);
                     break;
                 case "avg":
                     textboxValue = (textboxValue + Operand) / 2.0;
@@ -97,6 +98,7 @@ namespace WPFCalc
                 case "^":
                     textboxValue = Math.Pow(Operand, textboxValue);
                     break;
+
                 default:
                     return;
             }
@@ -140,6 +142,45 @@ namespace WPFCalc
             UpdateValue(textboxValue, false);
             UpdateExpression("", false);
             operation = "";
+        }
+
+        private void btn_C_Click(object sender, RoutedEventArgs e)
+        {
+            expression = "";
+            operation = "";
+            textboxValue = .0;
+            Operand = .0;
+            UpdateValue(.0, false);
+            UpdateExpression("", false);
+        }
+
+        private void btn_CE_Click(object sender, RoutedEventArgs e)
+        {
+            textboxValue = .0;
+            UpdateValue(.0, false);
+        }
+
+        private void btn_Backspace_Click(object sender, RoutedEventArgs e)
+        {
+            string textBoxValueText = textboxValue.ToString(CultureInfo.CurrentCulture);
+            if (textBoxValueText.Length <= 1 ||
+                textboxValue < 0 && textBoxValueText.Length <= 2)
+            {
+                textboxValue = .0;
+            }
+            else
+            {
+                textBoxValueText = textBoxValueText.Substring(0, textBoxValueText.Length - 1);
+                if (textBoxValueText[textBoxValueText.Length - 1].ToString() ==
+                    CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator)
+                {
+                    textBoxValueText = textBoxValueText.Substring(0, textBoxValueText.Length - 1);
+                }
+                if (textBoxValueText == "") textBoxValueText = "0";
+
+                if (!double.TryParse(textBoxValueText, NumberStyles.Number, CultureInfo.CurrentCulture, out textboxValue)) return;
+            }
+            UpdateValue(textboxValue, false);
         }
     }
 }
