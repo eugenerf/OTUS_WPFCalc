@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFCalc"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="300">
+        Title="Calculator" Height="500" Width="300" 
+        WindowStyle="ToolWindow" ResizeMode="NoResize">
     
     <!-- Resources -->
     <Window.Resources>
@@ -31,11 +32,16 @@
         <RoutedUICommand x:Key="KeyX" Text="max" />
         <RoutedUICommand x:Key="KeyA" Text="avg" />
         <RoutedUICommand x:Key="KeyP" Text="^" />
-        
+
+        <RoutedUICommand x:Key="KeyPlusMinus" Text="+/-" />
+
         <!-- Clear -->
         <RoutedUICommand x:Key="KeyEsc" Text="Esc" />
         <RoutedUICommand x:Key="KeyCE" Text="CE" />
         <RoutedUICommand x:Key="KeyBackspace" Text="Backspace" />
+        
+        <!-- Decimal -->
+        <RoutedUICommand x:Key="KeyComma" Text="Comma" />
 
         <!-- Result -->
         <RoutedUICommand x:Key="KeyEq" Text="=" />
@@ -66,10 +72,15 @@
         <CommandBinding Command="{StaticResource KeyA}" Executed="btn_operation_Click" />
         <CommandBinding Command="{StaticResource KeyP}" Executed="btn_operation_Click" />
         
+        <CommandBinding Command="{StaticResource KeyPlusMinus}" Executed="btn_PlusMinus_Click" />
+        
         <!-- Clear -->
         <CommandBinding Command="{StaticResource KeyEsc}" Executed="btn_C_Click" />
         <CommandBinding Command="{StaticResource KeyCE}" Executed="btn_CE_Click" />
         <CommandBinding Command="{StaticResource KeyBackspace}" Executed="btn_Backspace_Click" />
+        
+        <!-- Decimal -->
+        <CommandBinding Command="{StaticResource KeyComma}" Executed="btn_Comma_Click" />
 
         <!-- Result -->
         <CommandBinding Command="{StaticResource KeyEq}" Executed="btn_eq_Click" />
@@ -99,11 +110,16 @@
         <KeyBinding Key="X" Command="{StaticResource KeyX}" />
         <KeyBinding Key="A" Command="{StaticResource KeyA}" />
         <KeyBinding Key="P" Command="{StaticResource KeyP}" />
-        
+
+        <KeyBinding Key="I" Command="{StaticResource KeyPlusMinus}" />
+
         <!-- Clear -->
         <KeyBinding Key="Esc" Command="{StaticResource KeyEsc}" />
         <KeyBinding Key="C" Command="{StaticResource KeyCE}" />
         <KeyBinding Key="Backspace" Command="{StaticResource KeyBackspace}" />
+        
+        <!-- Decimal -->
+        <KeyBinding Key="Decimal" Command="{StaticResource KeyComma}" />
 
         <!-- Result -->
         <KeyBinding Key="Return" Command="{StaticResource KeyEq}" />
@@ -130,48 +146,51 @@
         </Grid.RowDefinitions>
         
         <!-- Buttons (Numbers) -->
-        <Button Grid.Row="4" Grid.Column="0" x:Name="btn_7" ToolTip="7" Command="{StaticResource Key7}">7</Button>
-        <Button Grid.Row="4" Grid.Column="1" x:Name="btn_8" ToolTip="8" Command="{StaticResource Key8}">8</Button>
-        <Button Grid.Row="4" Grid.Column="2" x:Name="btn_9" ToolTip="9" Command="{StaticResource Key9}">9</Button>
-        <Button Grid.Row="5" Grid.Column="0" x:Name="btn_4" ToolTip="4" Command="{StaticResource Key4}">4</Button>
-        <Button Grid.Row="5" Grid.Column="1" x:Name="btn_5" ToolTip="5" Command="{StaticResource Key5}">5</Button>
-        <Button Grid.Row="5" Grid.Column="2" x:Name="btn_6" ToolTip="6" Command="{StaticResource Key6}">6</Button>
-        <Button Grid.Row="6" Grid.Column="0" x:Name="btn_1" ToolTip="1" Command="{StaticResource Key1}">1</Button>
-        <Button Grid.Row="6" Grid.Column="1" x:Name="btn_2" ToolTip="2" Command="{StaticResource Key2}">2</Button>
-        <Button Grid.Row="6" Grid.Column="2" x:Name="btn_3" ToolTip="3" Command="{StaticResource Key3}">3</Button>
-        <Button Grid.Row="7" Grid.Column="1" x:Name="btn_0" ToolTip="0" Command="{StaticResource Key0}">0</Button>
+        <Button Grid.Row="4" Grid.Column="0" x:Name="btn_7" ToolTip="7" Focusable="False" Command="{StaticResource Key7}">7</Button>
+        <Button Grid.Row="4" Grid.Column="1" x:Name="btn_8" ToolTip="8" Focusable="False" Command="{StaticResource Key8}">8</Button>
+        <Button Grid.Row="4" Grid.Column="2" x:Name="btn_9" ToolTip="9" Focusable="False" Command="{StaticResource Key9}">9</Button>
+        <Button Grid.Row="5" Grid.Column="0" x:Name="btn_4" ToolTip="4" Focusable="False" Command="{StaticResource Key4}">4</Button>
+        <Button Grid.Row="5" Grid.Column="1" x:Name="btn_5" ToolTip="5" Focusable="False" Command="{StaticResource Key5}">5</Button>
+        <Button Grid.Row="5" Grid.Column="2" x:Name="btn_6" ToolTip="6" Focusable="False" Command="{StaticResource Key6}">6</Button>
+        <Button Grid.Row="6" Grid.Column="0" x:Name="btn_1" ToolTip="1" Focusable="False" Command="{StaticResource Key1}">1</Button>
+        <Button Grid.Row="6" Grid.Column="1" x:Name="btn_2" ToolTip="2" Focusable="False" Command="{StaticResource Key2}">2</Button>
+        <Button Grid.Row="6" Grid.Column="2" x:Name="btn_3" ToolTip="3" Focusable="False" Command="{StaticResource Key3}">3</Button>
+        <Button Grid.Row="7" Grid.Column="1" x:Name="btn_0" ToolTip="0" Focusable="False" Command="{StaticResource Key0}">0</Button>
         
         <!-- Buttons (Operation) -->
-        <Button Grid.Row="2" Grid.Column="0" x:Name="btn_min" ToolTip="n" Command="{StaticResource KeyN}">min</Button>
-        <Button Grid.Row="2" Grid.Column="1" x:Name="btn_max" ToolTip="x" Command="{StaticResource KeyX}">max</Button>
-        <Button Grid.Row="2" Grid.Column="2" x:Name="btn_avg" ToolTip="a" Command="{StaticResource KeyA}">avg</Button>
-        <Button Grid.Row="2" Grid.Column="3" x:Name="btn_pow" ToolTip="p" Command="{StaticResource KeyP}">x^y</Button>
+        <Button Grid.Row="2" Grid.Column="0" x:Name="btn_min" ToolTip="n" Focusable="False" Command="{StaticResource KeyN}">min</Button>
+        <Button Grid.Row="2" Grid.Column="1" x:Name="btn_max" ToolTip="x" Focusable="False" Command="{StaticResource KeyX}">max</Button>
+        <Button Grid.Row="2" Grid.Column="2" x:Name="btn_avg" ToolTip="a" Focusable="False" Command="{StaticResource KeyA}">avg</Button>
+        <Button Grid.Row="2" Grid.Column="3" x:Name="btn_pow" ToolTip="p" Focusable="False" Command="{StaticResource KeyP}">x^y</Button>
 
-        <Button Grid.Row="3" Grid.Column="3" x:Name="btn_div" ToolTip="/" Command="{StaticResource KeyDiv}">/</Button>
-        <Button Grid.Row="4" Grid.Column="3" x:Name="btn_mult" ToolTip="*" Command="{StaticResource KeyMul}">*</Button>
-        <Button Grid.Row="5" Grid.Column="3" x:Name="btn_minus" ToolTip="-" Command="{StaticResource KeyMinus}">-</Button>
-        <Button Grid.Row="6" Grid.Column="3" x:Name="btn_plus" ToolTip="+" Command="{StaticResource KeyPlus}">+</Button>
-        
+        <Button Grid.Row="3" Grid.Column="3" x:Name="btn_div" ToolTip="/" Focusable="False" Command="{StaticResource KeyDiv}">/</Button>
+        <Button Grid.Row="4" Grid.Column="3" x:Name="btn_mult" ToolTip="*" Focusable="False" Command="{StaticResource KeyMul}">*</Button>
+        <Button Grid.Row="5" Grid.Column="3" x:Name="btn_minus" ToolTip="-" Focusable="False" Command="{StaticResource KeyMinus}">-</Button>
+        <Button Grid.Row="6" Grid.Column="3" x:Name="btn_plus" ToolTip="+" Focusable="False" Command="{StaticResource KeyPlus}">+</Button>
+
+        <Button Grid.Row="7" Grid.Column="0" x:Name="btn_plusminus" ToolTip="i" Focusable="False"
+                Command="{StaticResource KeyPlusMinus}">+/-</Button>
+
         <!-- Result -->
-        <Button Grid.Row="7" Grid.Column="3" x:Name="btn_eq" ToolTip="Enter" Command="{StaticResource KeyEq}">=</Button>
+        <Button Grid.Row="7" Grid.Column="3" x:Name="btn_eq" ToolTip="Enter" Focusable="False" Command="{StaticResource KeyEq}">=</Button>
 
-        <!-- Some more buttons -->
-        <Button Grid.Row="7" Grid.Column="2" x:Name="btn_comma">,</Button>
-        <Button Grid.Row="7" Grid.Column="0" x:Name="btn_plusminus">+/-</Button>
+        <!-- Decimal -->
+        <Button Grid.Row="7" Grid.Column="2" x:Name="btn_comma" ToolTip="." Focusable="False" Command="{StaticResource KeyComma}">,</Button>        
         
         <!-- Buttons (Clear) -->
-        <Button Grid.Row="3" Grid.Column="0" x:Name="btn_C" ToolTip="Esc" Command="{StaticResource KeyEsc}">C</Button>
-        <Button Grid.Row="3" Grid.Column="1" x:Name="btn_CE" ToolTip="c" Command="{StaticResource KeyCE}">CE</Button>
-        <Button Grid.Row="3" Grid.Column="2" x:Name="btn_backspace" ToolTip="Backspace" Content="&lt;=" Command="{StaticResource KeyBackspace}"></Button>
+        <Button Grid.Row="3" Grid.Column="0" x:Name="btn_C" ToolTip="Esc" Focusable="False" Command="{StaticResource KeyEsc}">C</Button>
+        <Button Grid.Row="3" Grid.Column="1" x:Name="btn_CE" ToolTip="c" Focusable="False" Command="{StaticResource KeyCE}">CE</Button>
+        <Button Grid.Row="3" Grid.Column="2" x:Name="btn_backspace" ToolTip="Backspace" Focusable="False" Content="&lt;=" 
+                Command="{StaticResource KeyBackspace}"></Button>
         
         <!-- TextBox (Value) -->
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" 
                  TextAlignment="Right" VerticalAlignment="Bottom" FontSize="40"
-                 x:Name="txt_Value">0</TextBox>
+                 x:Name="txt_Value" Focusable="False" IsReadOnly="True">0</TextBox>
         
         <!-- TextBox Expression -->
         <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
                  TextAlignment="Right" VerticalAlignment="Center" FontSize="20"
-                 x:Name="txt_Expression"></TextBox>
+                 x:Name="txt_Expression" Focusable="False" IsReadOnly="True"></TextBox>
     </Grid>
 </Window>
