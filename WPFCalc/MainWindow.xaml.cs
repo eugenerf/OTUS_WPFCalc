@@ -1,17 +1,25 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace WPFCalc
 {
-    public struct Operation
+    /// <summary>
+    /// Calculator command (number, operation, clear etc.)
+    /// </summary>
+    public class CalcCommand : RoutedUICommand
     {
-        RoutedUICommand command;
-        string name;
-        uint priority;
+        /// <summary>
+        /// Operation
+        /// </summary>
+        public string Operation { get; set; }
+        /// <summary>
+        /// Operation priority
+        /// </summary>
+        public ushort Priority { get; set; }
     }
 
     /// <summary>
@@ -38,11 +46,16 @@ namespace WPFCalc
         /// <summary>
         /// Current operation
         /// </summary>
-        private string operation = "";
+        private CalcCommand currentOperation = null;
+        /// <summary>
+        /// Already entered commands stack
+        /// </summary>
+        private Stack<CalcCommand> enteredCommands;
 
         public MainWindow()
         {
             InitializeComponent();
+            enteredCommands = new Stack<CalcCommand>();
         }
 
         /// <summary>
@@ -57,7 +70,7 @@ namespace WPFCalc
                 textValue = txt_Value.Text + number.ToString(CultureInfo.CurrentCulture);
             else
                 textValue = number.ToString(CultureInfo.CurrentCulture);
-            
+
             if (!double.TryParse(textValue, NumberStyles.Number, CultureInfo.CurrentCulture, out textboxValue))
             {
                 txt_Value.Text = "0";
@@ -83,42 +96,148 @@ namespace WPFCalc
         }
 
         /// <summary>
+        /// Updates the expression textbox with the specified operation
+        /// </summary>
+        /// <param name="operation">Operation to update to the expression textbox</param>
+        private void UpdateExpression(CalcCommand operation)
+        {
+            expression += " " + operation.Operation;
+            txt_Expression.Text = expression;
+        }
+
+        /// <summary>
         /// Calculates the current operation
         /// </summary>
         private void Calculate()
         {
-            switch (operation)
+            if (currentOperation == null) return;
+            string operation = currentOperation.Operation;
+            if (operation == (Resources["Addition"] as CalcCommand).Operation)
             {
-                case "+":
+                if (enteredCommands.Count > 2)  //one operation is already entered
+                {
+                    if(!CheckPriority())
+                    {
+                        Operand = CalculateEntered();
+                        textboxValue = Operand + textboxValue;
+                    }
+                }
+                else                            //this operation is the first entered one
+                {
                     textboxValue = Operand + textboxValue;
-                    break;
-                case "-":
-                    textboxValue = Operand - textboxValue;
-                    break;
-                case "*":
-                    textboxValue = Operand * textboxValue;
-                    break;
-                case "/":
-                    textboxValue = Operand / textboxValue;
-                    break;
-                case "min":
-                    textboxValue = Math.Min(Operand, textboxValue);
-                    break;
-                case "max":
-                    textboxValue = Math.Max(Operand, textboxValue);
-                    break;
-                case "avg":
-                    textboxValue = (textboxValue + Operand) / 2.0;
-                    break;
-                case "^":
-                    textboxValue = Math.Pow(Operand, textboxValue);
-                    break;
-
-                default:
-                    return;
+                }
+            }
+            else if (operation == (Resources["Subtraction"] as CalcCommand).Operation)
+            {
+                textboxValue = Operand - textboxValue;
+            }
+            else if (operation == (Resources["Multiplication"] as CalcCommand).Operation)
+            {
+                textboxValue = Operand * textboxValue;
+            }
+            else if (operation == (Resources["Division"] as CalcCommand).Operation)
+            {
+                textboxValue = Operand / textboxValue;
+            }
+            else if (operation == (Resources["Minimum"] as CalcCommand).Operation)
+            {
+                textboxValue = Math.Min(Operand, textboxValue);
+            }
+            else if (operation == (Resources["Maximum"] as CalcCommand).Operation)
+            {
+                textboxValue = Math.Max(Operand, textboxValue);
+            }
+            else if (operation == (Resources["Average"] as CalcCommand).Operation)
+            {
+                textboxValue = (textboxValue + Operand) / 2.0;
+            }
+            else if (operation == (Resources["Power"] as CalcCommand).Operation)
+            {
+                textboxValue = Math.Pow(Operand, textboxValue);
+            }
+            else
+            {
+                return;
             }
             Operand = .0;
             decimalEntered = false;
+        }
+
+        /// <summary>
+        /// Checks priorities of current and previous operations.
+        /// If current priority is bigger pushes commands to stack.
+        /// Otherwise does nothing.
+        /// </summary>
+        /// <returns>TRUE if current priority is bigger</returns>
+        private bool CheckPriority()
+        {
+            CalcCommand pushOperand = new CalcCommand();
+            pushOperand.Operation = Operand.ToString(CultureInfo.CurrentCulture);
+            pushOperand.Priority = 0;
+            enteredCommands.Push(pushOperand);
+            if (currentOperation.Priority > enteredCommands.Peek().Priority)    //current operation priority is bigger than the previous one
+            {
+                enteredCommands.Push(currentOperation);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Calculates already entered commands (e.g. stack)
+        /// </summary>
+        /// <returns>Calculation result</returns>
+        private double CalculateEntered()
+        {
+            if (enteredCommands.Count <= 0) return .0;
+            if (enteredCommands.Count == 1)
+            {
+                double result = .0;
+                double.TryParse(enteredCommands.Pop().Operation, NumberStyles.Number, CultureInfo.CurrentCulture, out result);
+                return result;
+            }
+            double right = .0;
+            double.TryParse(enteredCommands.Pop().Operation, NumberStyles.Number, CultureInfo.CurrentCulture, out right);
+            string operation = enteredCommands.Pop().Operation;
+            double left = .0;
+            double.TryParse(enteredCommands.Pop().Operation, NumberStyles.Number, CultureInfo.CurrentCulture, out left);
+            double result = .0;
+            if (operation == (Resources["Addition"] as CalcCommand).Operation)
+            {
+                result = left + right;
+            }
+            else if (operation == (Resources["Subtraction"] as CalcCommand).Operation)
+            {
+                result = left - right;
+            }
+            else if (operation == (Resources["Multiplication"] as CalcCommand).Operation)
+            {
+                result = left * right;
+            }
+            else if (operation == (Resources["Division"] as CalcCommand).Operation)
+            {
+                result = left / right;
+            }
+            else if (operation == (Resources["Minimum"] as CalcCommand).Operation)
+            {
+                result = Math.Min(left, right);
+            }
+            else if (operation == (Resources["Maximum"] as CalcCommand).Operation)
+            {
+                result = Math.Max(left, right);
+            }
+            else if (operation == (Resources["Average"] as CalcCommand).Operation)
+            {
+                result = (left + right) / 2.0;
+            }
+            else if (operation == (Resources["Power"] as CalcCommand).Operation)
+            {
+                result = Math.Pow(left, right);
+            }
+            else
+            {
+                return .0;
+            }
         }
 
         private void btn_number_Click(object sender, RoutedEventArgs e)
@@ -128,8 +247,8 @@ namespace WPFCalc
             if (sender == null) return;     //sender is not a window
             if (senderWindow.Title != Title) return;    //sender window is not the calc window
             ExecutedRoutedEventArgs executedArgs = e as ExecutedRoutedEventArgs;
-            RoutedUICommand executedCommand = executedArgs.Command as RoutedUICommand;
-            string commandText = executedCommand.Text;
+            CalcCommand executedCommand = executedArgs.Command as CalcCommand;
+            string commandText = executedCommand.Operation;
             if (!double.TryParse(commandText, out number)) return;
             decimalEntered = false;
             UpdateValue(number);
@@ -138,19 +257,18 @@ namespace WPFCalc
         private void btn_operation_Click(object sender, RoutedEventArgs e)
         {
             UpdateExpression(textboxValue.ToString());
-            if (operation != "") Calculate();
+            if (currentOperation != null) Calculate();
 
             Window senderWindow = sender as Window;
             if (sender == null) return; //sender is not a window
             if (senderWindow.Title != Title) return;   //sender window is not a calc window
             ExecutedRoutedEventArgs executedArgs = e as ExecutedRoutedEventArgs;
-            RoutedUICommand executedCommand = executedArgs.Command as RoutedUICommand;
-            operation = executedCommand.Text;
+            currentOperation = executedArgs.Command as CalcCommand;
 
             Operand = textboxValue;
             textboxValue = .0;
             decimalEntered = false;
-            UpdateExpression(operation);
+            UpdateExpression(currentOperation);
             UpdateValue(0, false);
         }
 
@@ -159,18 +277,20 @@ namespace WPFCalc
             Calculate();
             UpdateValue(textboxValue, false);
             UpdateExpression("", false);
-            operation = "";
+            currentOperation = null;
+            enteredCommands.Clear();
         }
 
         private void btn_C_Click(object sender, RoutedEventArgs e)
         {
             expression = "";
-            operation = "";
+            currentOperation = null;
             textboxValue = .0;
             decimalEntered = false;
             Operand = .0;
             UpdateValue(.0, false);
             UpdateExpression("", false);
+            enteredCommands.Clear();
         }
 
         private void btn_CE_Click(object sender, RoutedEventArgs e)
