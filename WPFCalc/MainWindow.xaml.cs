@@ -38,6 +38,12 @@ namespace WPFCalc
             //adding the calculator operations to the expression reader
             AddOperation("Addition", () => { return new Addition(); });
             AddOperation("Subtraction", () => { return new Subtraction(); });
+            AddOperation("Multiplication", () => { return new Multiplication(); });
+            AddOperation("Division", () => { return new Division(); });
+            AddOperation("Minimum", () => { return new Minimum(); });
+            AddOperation("Maximum", () => { return new Maximum(); });
+            AddOperation("Average", () => { return new Average(); });
+            AddOperation("Power", () => { return new Power(); });
         }
 
         private void AddOperation(string name, Func<IExpression> operation)

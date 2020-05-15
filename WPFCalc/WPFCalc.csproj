@@ -66,7 +66,13 @@
     <Compile Include="CalcEngine\Context.cs" />
     <Compile Include="CalcEngine\ExpressionReader.cs" />
     <Compile Include="CalcEngine\Expressions\Addition.cs" />
+    <Compile Include="CalcEngine\Expressions\Average.cs" />
+    <Compile Include="CalcEngine\Expressions\Division.cs" />
+    <Compile Include="CalcEngine\Expressions\Maximum.cs" />
+    <Compile Include="CalcEngine\Expressions\Minimum.cs" />
+    <Compile Include="CalcEngine\Expressions\Multiplication.cs" />
     <Compile Include="CalcEngine\Expressions\Number.cs" />
+    <Compile Include="CalcEngine\Expressions\Power.cs" />
     <Compile Include="CalcEngine\Expressions\Subtraction.cs" />
     <Compile Include="CalcEngine\IExpression.cs" />
     <Compile Include="CalcEngine\Operands.cs" />
