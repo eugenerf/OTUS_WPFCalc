@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Expression context (keeps the expression variables)
+    /// </summary>
     class Context
     {
         /// <summary>

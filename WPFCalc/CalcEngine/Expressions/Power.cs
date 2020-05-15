@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Power operation
+    /// </summary>
     class Power : Operands, IExpression
     {
         public Power() : base() { }

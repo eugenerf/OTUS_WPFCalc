@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Division operation
+    /// </summary>
     class Division : Operands, IExpression
     {
         public Division() : base() { }

@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Minimum operation
+    /// </summary>
     class Minimum : Operands, IExpression
     {
         public Minimum() : base() { }

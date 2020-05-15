@@ -1,5 +1,5 @@
 ﻿namespace WPFCalc.CalcEngine
-{ 
+{
     class Operands
     {
         /// <summary>
@@ -15,12 +15,6 @@
         {
             leftOperand = null;
             rightOperand = null;
-        }
-
-        public Operands(IExpression left, IExpression right)
-        {
-            leftOperand = left;
-            rightOperand = right;
         }
 
         /// <summary>

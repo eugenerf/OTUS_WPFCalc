@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Average operation
+    /// </summary>
     class Average : Operands, IExpression
     {
         public Average() : base() { }

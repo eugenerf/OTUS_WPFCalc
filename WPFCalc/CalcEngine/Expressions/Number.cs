@@ -3,7 +3,7 @@
     /// <summary>
     /// Number (terminal expression)
     /// </summary>
-    class Number:IExpression
+    class Number : IExpression
     {
         /// <summary>
         /// Variable name

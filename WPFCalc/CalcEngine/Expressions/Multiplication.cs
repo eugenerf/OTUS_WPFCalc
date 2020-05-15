@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Multiplication operation
+    /// </summary>
     class Multiplication : Operands, IExpression
     {
         public Multiplication() : base() { }

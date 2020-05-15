@@ -1,5 +1,8 @@
 ﻿namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Addition operation
+    /// </summary>
     class Addition : Operands, IExpression
     {
         public Addition() : base() { }

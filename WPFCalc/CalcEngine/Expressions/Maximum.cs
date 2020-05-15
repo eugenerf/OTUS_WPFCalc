@@ -2,6 +2,9 @@
 
 namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Maximum operation
+    /// </summary>
     class Maximum : Operands, IExpression
     {
         public Maximum() : base() { }

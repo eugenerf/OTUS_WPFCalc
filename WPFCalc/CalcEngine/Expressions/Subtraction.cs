@@ -1,5 +1,8 @@
 ﻿namespace WPFCalc.CalcEngine
 {
+    /// <summary>
+    /// Subtraction operation
+    /// </summary>
     class Subtraction : Operands, IExpression
     {
         public Subtraction() : base() { }
