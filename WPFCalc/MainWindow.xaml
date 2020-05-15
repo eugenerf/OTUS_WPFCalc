@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Calculator" Height="500" Width="300" 
         WindowStyle="ToolWindow" ResizeMode="NoResize">
-    
+
     <!-- Resources -->
     <Window.Resources>
         <!-- Numbers -->
@@ -61,7 +61,7 @@
         <CommandBinding Command="{StaticResource Number4}" Executed="btn_number_Click" />
         <CommandBinding Command="{StaticResource Number5}" Executed="btn_number_Click" />
         <CommandBinding Command="{StaticResource Number6}" Executed="btn_number_Click" />
-        
+
         <!-- Operations -->
         <CommandBinding Command="{StaticResource Addition}" Executed="btn_operation_Click" />
         <CommandBinding Command="{StaticResource Subtraction}" Executed="btn_operation_Click" />
@@ -72,21 +72,21 @@
         <CommandBinding Command="{StaticResource Maximum}" Executed="btn_operation_Click" />
         <CommandBinding Command="{StaticResource Average}" Executed="btn_operation_Click" />
         <CommandBinding Command="{StaticResource Power}" Executed="btn_operation_Click" />
-        
+
         <CommandBinding Command="{StaticResource Inversion}" Executed="btn_PlusMinus_Click" />
-        
+
         <!-- Clear -->
         <CommandBinding Command="{StaticResource ClearAll}" Executed="btn_C_Click" />
         <CommandBinding Command="{StaticResource ClearEntry}" Executed="btn_CE_Click" />
         <CommandBinding Command="{StaticResource ClearOne}" Executed="btn_Backspace_Click" />
-        
+
         <!-- Decimal -->
         <CommandBinding Command="{StaticResource Decimal}" Executed="btn_Comma_Click" />
 
         <!-- Result -->
         <CommandBinding Command="{StaticResource Result}" Executed="btn_eq_Click" />
     </Window.CommandBindings>
-    
+
     <!-- InputBindings -->
     <Window.InputBindings>
         <!-- Numbers -->
@@ -100,7 +100,7 @@
         <KeyBinding Key="NumPad4" Command="{StaticResource Number4}" />
         <KeyBinding Key="NumPad5" Command="{StaticResource Number5}" />
         <KeyBinding Key="NumPad6" Command="{StaticResource Number6}" />
-        
+
         <!-- Operations -->
         <KeyBinding Key="Add" Command="{StaticResource Addition}" />
         <KeyBinding Key="Subtract" Command="{StaticResource Subtraction}" />
@@ -118,14 +118,14 @@
         <KeyBinding Key="Esc" Command="{StaticResource ClearAll}" />
         <KeyBinding Key="C" Command="{StaticResource ClearEntry}" />
         <KeyBinding Key="Backspace" Command="{StaticResource ClearOne}" />
-        
+
         <!-- Decimal -->
         <KeyBinding Key="Decimal" Command="{StaticResource Decimal}" />
 
         <!-- Result -->
         <KeyBinding Key="Return" Command="{StaticResource Result}" />
     </Window.InputBindings>
-    
+
     <!-- Grid -->
     <Grid>
         <Grid.ColumnDefinitions>
@@ -134,7 +134,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="2*" />
             <RowDefinition />
@@ -145,7 +145,7 @@
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
-        
+
         <!-- Buttons (Numbers) -->
         <Button Grid.Row="4" Grid.Column="0" x:Name="btn_7" ToolTip="7" Focusable="False" Command="{StaticResource Number7}">7</Button>
         <Button Grid.Row="4" Grid.Column="1" x:Name="btn_8" ToolTip="8" Focusable="False" Command="{StaticResource Number8}">8</Button>
@@ -157,7 +157,7 @@
         <Button Grid.Row="6" Grid.Column="1" x:Name="btn_2" ToolTip="2" Focusable="False" Command="{StaticResource Number2}">2</Button>
         <Button Grid.Row="6" Grid.Column="2" x:Name="btn_3" ToolTip="3" Focusable="False" Command="{StaticResource Number3}">3</Button>
         <Button Grid.Row="7" Grid.Column="1" x:Name="btn_0" ToolTip="0" Focusable="False" Command="{StaticResource Number0}">0</Button>
-        
+
         <!-- Buttons (Operation) -->
         <Button Grid.Row="2" Grid.Column="0" x:Name="btn_min" ToolTip="n" Focusable="False" Command="{StaticResource Minimum}">min</Button>
         <Button Grid.Row="2" Grid.Column="1" x:Name="btn_max" ToolTip="x" Focusable="False" Command="{StaticResource Maximum}">max</Button>
@@ -176,19 +176,19 @@
         <Button Grid.Row="7" Grid.Column="3" x:Name="btn_eq" ToolTip="Enter" Focusable="False" Command="{StaticResource Result}">=</Button>
 
         <!-- Decimal -->
-        <Button Grid.Row="7" Grid.Column="2" x:Name="btn_comma" ToolTip="." Focusable="False" Command="{StaticResource Decimal}">,</Button>        
-        
+        <Button Grid.Row="7" Grid.Column="2" x:Name="btn_comma" ToolTip="." Focusable="False" Command="{StaticResource Decimal}">,</Button>
+
         <!-- Buttons (Clear) -->
         <Button Grid.Row="3" Grid.Column="0" x:Name="btn_C" ToolTip="Esc" Focusable="False" Command="{StaticResource ClearAll}">C</Button>
         <Button Grid.Row="3" Grid.Column="1" x:Name="btn_CE" ToolTip="c" Focusable="False" Command="{StaticResource ClearEntry}">CE</Button>
         <Button Grid.Row="3" Grid.Column="2" x:Name="btn_backspace" ToolTip="Backspace" Focusable="False" Content="&lt;=" 
                 Command="{StaticResource ClearOne}"></Button>
-        
+
         <!-- TextBox (Result) -->
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" 
                  TextAlignment="Right" VerticalAlignment="Center" FontSize="20"
-                 x:Name="txt_Result" Focusable="False" IsReadOnly="True" ToolTip="Result" FontWeight="Bold">0</TextBox>
-        
+                 x:Name="txt_Result" Focusable="False" IsReadOnly="True" ToolTip="Result" FontWeight="Bold"/>
+
         <!-- TextBox Expression -->
         <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
                  TextAlignment="Right" VerticalAlignment="Bottom" FontSize="20"
