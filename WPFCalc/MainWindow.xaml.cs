@@ -1,28 +1,15 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
 
 namespace WPFCalc
 {
-    public struct Operation
-    {
-        RoutedUICommand command;
-        string name;
-        uint priority;
-    }
-
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// Current expression string
-        /// </summary>
-        private string expression = "";
         /// <summary>
         /// Current textbox value (right operand)
         /// </summary>
@@ -68,18 +55,6 @@ namespace WPFCalc
 
             txt_Value.Text = textboxValue.ToString(CultureInfo.CurrentCulture);
             if (decimalEntered) txt_Value.Text += CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
-        }
-
-        /// <summary>
-        /// Updates the expression textbox with the specified string
-        /// </summary>
-        /// <param name="str">String to update to the expression textbox</param>
-        /// <param name="append">Append str if TRUE, set the new str otherwise</param>
-        private void UpdateExpression(string str, bool append = true)
-        {
-            if (append) expression += " " + str;
-            else expression = str;
-            txt_Expression.Text = expression;
         }
 
         /// <summary>
@@ -137,7 +112,6 @@ namespace WPFCalc
 
         private void btn_operation_Click(object sender, RoutedEventArgs e)
         {
-            UpdateExpression(textboxValue.ToString());
             if (operation != "") Calculate();
 
             Window senderWindow = sender as Window;
@@ -150,7 +124,6 @@ namespace WPFCalc
             Operand = textboxValue;
             textboxValue = .0;
             decimalEntered = false;
-            UpdateExpression(operation);
             UpdateValue(0, false);
         }
 
@@ -158,19 +131,16 @@ namespace WPFCalc
         {
             Calculate();
             UpdateValue(textboxValue, false);
-            UpdateExpression("", false);
             operation = "";
         }
 
         private void btn_C_Click(object sender, RoutedEventArgs e)
         {
-            expression = "";
             operation = "";
             textboxValue = .0;
             decimalEntered = false;
             Operand = .0;
             UpdateValue(.0, false);
-            UpdateExpression("", false);
         }
 
         private void btn_CE_Click(object sender, RoutedEventArgs e)
