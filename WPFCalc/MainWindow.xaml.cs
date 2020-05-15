@@ -2,8 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Input;
-using System.Collections;
-using System.Collections.Generic;
+using WPFCalc.CalcEngine;
 
 namespace WPFCalc
 {
@@ -35,6 +34,16 @@ namespace WPFCalc
         public MainWindow()
         {
             InitializeComponent();
+
+            //adding the calculator operations to the expression reader
+            AddOperation("Addition", () => { return new Addition(); });
+            AddOperation("Subtraction", () => { return new Subtraction(); });
+        }
+
+        private void AddOperation(string name, Func<IExpression> operation)
+        {
+            CalcCommand command = Resources[name] as CalcCommand;
+            ExpressionReader.AddOperation(command.Operation, operation, command.Priority);
         }
 
         /// <summary>
@@ -97,13 +106,14 @@ namespace WPFCalc
             GetCurrentInput(out currentInput);
             double currentNumber = .0;
 
-            if(!double.TryParse(currentInput,out currentNumber))        //if current input is not a number then it is an operation
+            if (!double.TryParse(currentInput, out currentNumber))        //if current input is not a number then it is an operation
             {
                 //so we'll begin the new number input
                 if (expression != "") expression += " ";
             }
-            expression += commandText;            
+            expression += commandText;
 
+            UpdateResult();
             UpdateExpression();
         }
 
@@ -127,14 +137,32 @@ namespace WPFCalc
             }
             expression += commandText;
 
+            UpdateResult();
             UpdateExpression();
+        }
+
+        private void UpdateResult()
+        {
+            Context currentContext = null;
+            IExpression currentExpression = null;
+            if (ExpressionReader.ReadExpression(expression, ref currentExpression, ref currentContext))
+            {
+                txt_Result.Text = currentExpression.Interpret(currentContext).ToString(CultureInfo.CurrentCulture);
+            }
+            else
+            {
+                txt_Result.Text = "Expression invalid!";
+            }
         }
 
         private void btn_eq_Click(object sender, RoutedEventArgs e)
         {
-            expression = "";
+            UpdateResult();
+            double result = .0;
+            if (!double.TryParse(txt_Result.Text, out result)) expression = "";
+            else expression = txt_Result.Text;
             UpdateExpression();
-            //CALCULATE THE RESULT and set it to the result textbox
+            txt_Result.Text = "";
         }
 
         private void btn_C_Click(object sender, RoutedEventArgs e)
@@ -151,15 +179,29 @@ namespace WPFCalc
             if (currentPosition == 0) expression = "";
             else expression = expression.Substring(0, currentPosition - 1);
             UpdateExpression();
-            //CALCULATE THE RESULT and set it to the result textbox
+            UpdateResult();
         }
 
         private void btn_Backspace_Click(object sender, RoutedEventArgs e)
         {
-            if (expression == "") return;
-            expression = expression.Substring(0, expression.Length - 1);
+            string currentInput = "";
+            int currentPosition = GetCurrentInput(out currentInput);
+            if (currentPosition == 0) expression = "";
+            else
+            {
+                double currentNumber = .0;
+                if (!double.TryParse(currentInput, out currentNumber))
+                    expression = expression.Substring(0, currentPosition - 1);
+                else
+                {
+                    expression = expression.Substring(0, expression.Length - 1);
+                    if(expression[expression.Length-1]==' ')
+                        expression = expression.Substring(0, expression.Length - 1);
+                }
+            }
             UpdateExpression();
-            //CALCULATE THE RESULT and set it to the result textbox
+            UpdateResult();
+            if (expression == "") txt_Result.Text = "";
         }
 
         private void btn_PlusMinus_Click(object sender, RoutedEventArgs e)
@@ -175,7 +217,7 @@ namespace WPFCalc
             else expression = expression.Substring(0, currentPosition);
             expression += currentNumber.ToString(CultureInfo.CurrentCulture);
             UpdateExpression();
-            //CALCULATE THE RESULT and set it to the result textbox
+            UpdateResult();
         }
 
         private void btn_Comma_Click(object sender, RoutedEventArgs e)
