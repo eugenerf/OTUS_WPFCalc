@@ -67,20 +67,20 @@ namespace WPFCalc
         {
             string textValue = "";
             if (append)
-                textValue = txt_Value.Text + number.ToString(CultureInfo.CurrentCulture);
+                textValue = txt_Result.Text + number.ToString(CultureInfo.CurrentCulture);
             else
                 textValue = number.ToString(CultureInfo.CurrentCulture);
 
             if (!double.TryParse(textValue, NumberStyles.Number, CultureInfo.CurrentCulture, out textboxValue))
             {
-                txt_Value.Text = "0";
+                txt_Result.Text = "0";
                 textboxValue = .0;
                 decimalEntered = false;
                 return;
             }
 
-            txt_Value.Text = textboxValue.ToString(CultureInfo.CurrentCulture);
-            if (decimalEntered) txt_Value.Text += CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
+            txt_Result.Text = textboxValue.ToString(CultureInfo.CurrentCulture);
+            if (decimalEntered) txt_Result.Text += CultureInfo.CurrentCulture.NumberFormat.NumberDecimalSeparator;
         }
 
         /// <summary>
@@ -93,6 +93,7 @@ namespace WPFCalc
             if (append) expression += " " + str;
             else expression = str;
             txt_Expression.Text = expression;
+            txt_Expression.ScrollToEnd();
         }
 
         /// <summary>
@@ -189,10 +190,10 @@ namespace WPFCalc
         /// <returns>Calculation result</returns>
         private double CalculateEntered()
         {
+            double result = .0;
             if (enteredCommands.Count <= 0) return .0;
             if (enteredCommands.Count == 1)
             {
-                double result = .0;
                 double.TryParse(enteredCommands.Pop().Operation, NumberStyles.Number, CultureInfo.CurrentCulture, out result);
                 return result;
             }
@@ -201,7 +202,6 @@ namespace WPFCalc
             string operation = enteredCommands.Pop().Operation;
             double left = .0;
             double.TryParse(enteredCommands.Pop().Operation, NumberStyles.Number, CultureInfo.CurrentCulture, out left);
-            double result = .0;
             if (operation == (Resources["Addition"] as CalcCommand).Operation)
             {
                 result = left + right;
@@ -238,6 +238,7 @@ namespace WPFCalc
             {
                 return .0;
             }
+            return result;
         }
 
         private void btn_number_Click(object sender, RoutedEventArgs e)

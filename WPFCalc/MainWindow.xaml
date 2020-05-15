@@ -136,7 +136,7 @@
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="2*" />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -184,14 +184,15 @@
         <Button Grid.Row="3" Grid.Column="2" x:Name="btn_backspace" ToolTip="Backspace" Focusable="False" Content="&lt;=" 
                 Command="{StaticResource ClearOne}"></Button>
         
-        <!-- TextBox (Value) -->
+        <!-- TextBox (Result) -->
         <TextBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" 
-                 TextAlignment="Right" VerticalAlignment="Bottom" FontSize="40"
-                 x:Name="txt_Value" Focusable="False" IsReadOnly="True">0</TextBox>
+                 TextAlignment="Right" VerticalAlignment="Center" FontSize="20"
+                 x:Name="txt_Result" Focusable="False" IsReadOnly="True" ToolTip="Result" FontWeight="Bold">0</TextBox>
         
         <!-- TextBox Expression -->
         <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4"
-                 TextAlignment="Right" VerticalAlignment="Center" FontSize="20"
-                 x:Name="txt_Expression" Focusable="False" IsReadOnly="True"></TextBox>
+                 TextAlignment="Right" VerticalAlignment="Bottom" FontSize="20"
+                 x:Name="txt_Expression" Focusable="False" IsReadOnly="True" ToolTip="Expression" TextWrapping="Wrap" 
+                 FontStyle="Italic" VerticalScrollBarVisibility="Auto"/>
     </Grid>
 </Window>
